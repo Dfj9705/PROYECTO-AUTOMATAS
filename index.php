@@ -41,7 +41,7 @@
                                         <td><?= selectEstados(7, $i) ?></td>
                                         <td><?= selectEstados(7, $i) ?></td>
                                         <td>
-                                            <input class="form-check-input" type="checkbox" name="estado<?= $i ?>[]" id="estado<?= $i ?>" value="1">
+                                            <input class="form-check-input" type="checkbox" name="q<?= $i ?>[]" id="q<?= $i ?>" value="1">
                                         </td>
                                     </tr>
                                 <?php endfor ?>

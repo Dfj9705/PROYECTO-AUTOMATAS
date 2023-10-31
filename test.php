@@ -1,3 +1,80 @@
+<?php
+require 'vendor/autoload.php';
+$caracteres = ['+', 'E', '-', '*', '/'];
+// echo "<pre>";
+// print_r($_POST);
+// echo "</pre>";
+$graph = new Graphviz\Digraph();
+$graph->set('rankdir', 'LR');
+$graph->beginNode('q0');
+
+foreach ($_POST as $key => $value) {
+    if($key != 'cadena'){
+        $final = isset($_POST[$key][6]);  
+        foreach($_POST[$key] as $clave => $valor){
+            $edge = [];
+            $edge[]= $key;
+            $valores = $final ? ['peripheries' =>  '2'] : [];
+            if($valor != '' && $clave != 6){
+                $nodo1 = $graph->node($key);
+                $edge[] = "q$valor";
+                $nodo2 = $graph->node("q$valor");
+                $graph->edge($edge, ['label'=> $clave < 4  ? "\\" . $caracteres[$clave] : 'DIGITO'] );
+            }
+        }
+        // foreach($_POST[$key] as $clave => $valor){
+        //     $edge = [];
+        //     $edge[]= $key;
+        //     if($valor != '' && $clave != 6){
+        //         $edge[] = "q$valor";
+        //         $graph->edge($edge, ['label'=> $clave < 4  ? "\\" . $caracteres[$clave] : 'DIGITO'] );
+        //         print_r($edge);   
+        //         echo "<br>";
+        //         // $edge =
+        //     }
+        // }
+
+        // if(count($edge) > 1){
+        // }
+
+
+    }
+}
+// exit;
+
+// $graph->edge(['q0', 'q0']);
+
+// $foo =$graph->node('foo');
+
+
+$dotCode = $graph->render();
+// $dotCode = 'digraph G {
+//     q0 -> q1;
+//     q1 -> q1;
+// }';
+
+// Ruta al archivo DOT
+$dotFilePath = 'temp.dot';
+
+// Ruta al archivo de imagen de salida
+$imageFilePath = 'output.png';
+
+// Guardar el código DOT en un archivo
+file_put_contents($dotFilePath, $dotCode);
+
+// // Ejecutar Graphviz para convertir el archivo DOT en una imagen
+exec("dot -Tpng $dotFilePath -o $imageFilePath");
+
+// // Verificar si se generó la imagen con éxito
+// if (file_exists($imageFilePath)) {
+//     echo 'La imagen se ha generado con éxito: <br>';
+//     echo '<img src="' . $imageFilePath . '" alt="Gráfico DOT">';
+// } else {
+//     echo 'No se pudo generar la imagen.';
+// }
+
+// exit;
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,18 +88,18 @@
         <h1 class="text-center">Resultados:</h1>
         <div class="row justify-content-center">
             <div class="col-lg-6 border rounded bg-light">
+                <img src="<?= $imageFilePath ?>" alt="Gráfico DOT">
 
-         
 <?php
 
     for ($i=0; $i < 7; $i++) { 
-        $nombre = "estado$i";
+        $nombre = "q$i";
         $$nombre = $_POST[$nombre];
     }
 
     $cadena = $_POST['cadena'];
     $arrayCadena = str_split($cadena);
-    $caracteres = ['+', 'E', '-', '*', '/'];
+
     echo "<p><span class='fw-bold'>CADENA INGRESADA: </span>";
     echo $cadena;
     echo "</p>";
@@ -36,7 +113,7 @@
   
 
     echo "<hr>";
-    $nombre = "estado$estadoActual";
+    $nombre = "q$estadoActual";
     if(count($arrayCadena) > 0){
         foreach ($arrayCadena as $key => $caracter) {
             
@@ -55,7 +132,7 @@
 
                
                 $estadoActual = $$nombre[$indice];
-                $nombre = "estado$estadoActual";
+                $nombre = "q$estadoActual";
                 $valido = true;
                 $valido = isset($$nombre[6]);
                 echo "<p><span class='fw-bold'>CARACTER A EVALUAR: </span>";
@@ -66,7 +143,7 @@
             } else if($numerico){
                 
                 $estadoActual = $$nombre[5];
-                $nombre = "estado$estadoActual";
+                $nombre = "q$estadoActual";
                 $valido = true;
                 $valido = isset($$nombre[6]);
                 echo "<p><span class='fw-bold'>CARACTER A EVALUAR: </span>";
@@ -82,6 +159,8 @@
             echo "<br>";
             $counterCadena++;
         }
+        echo "<p><span class='fw-bold'>ESTADO FINAL: </span> q";
+        echo $estadoActual;
     }else{
         $valido = isset($$nombre[6]);
     }

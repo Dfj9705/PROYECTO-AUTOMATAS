@@ -1,0 +1,13 @@
+{
+    "name": "abner/proyecto_automatas",
+    "description": "Proyecto automatas parte 2",
+    "authors": [
+        {
+            "name": "Dfj9705",
+            "email": "69936003+Dfj9705@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "alom/graphviz": "^2.0"
+    }
+}
