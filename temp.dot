@@ -7,7 +7,7 @@ digraph G {
     q1;
     q1 -> q2 [label="\\+"];
     q1 -> q2 [label="\\-"];
-    q2 [peripheries=2];
+    q2;
     q2 -> q3 [label=DIGITO];
     q3 [peripheries=2];
     q3 -> q3 [label=DIGITO];
