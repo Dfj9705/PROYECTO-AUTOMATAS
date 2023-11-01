@@ -1,1 +1,4 @@
 /vendor/
+/output.png
+/temp.dot
+composer.lock

@@ -8,17 +8,28 @@ $graph = new Graphviz\Digraph();
 $graph->set('rankdir', 'LR');
 $graph->beginNode('q0');
 
+function todosValoresVacios($array) {
+    foreach ($array as $valor) {
+        if (!empty($valor)) {
+            return false; // Al menos un valor no es vacío
+        }
+    }
+    return true; // Todos los valores son vacíos
+}
+
 foreach ($_POST as $key => $value) {
     if($key != 'cadena'){
+         
+        $config = $value[6] == 1 ?  ['peripheries' =>  '2']  : [];
+        // var_dump($filtrados);
+        !todosValoresVacios($value) ?  $graph->node($key, $config) : null ;
+
         $final = isset($_POST[$key][6]);  
-        foreach($_POST[$key] as $clave => $valor){
+        foreach($value as $clave => $valor){
             $edge = [];
             $edge[]= $key;
-            $valores = $final ? ['peripheries' =>  '2'] : [];
             if($valor != '' && $clave != 6){
-                $nodo1 = $graph->node($key);
                 $edge[] = "q$valor";
-                $nodo2 = $graph->node("q$valor");
                 $graph->edge($edge, ['label'=> $clave < 4  ? "\\" . $caracteres[$clave] : 'DIGITO'] );
             }
         }
@@ -88,7 +99,7 @@ exec("dot -Tpng $dotFilePath -o $imageFilePath");
         <h1 class="text-center">Resultados:</h1>
         <div class="row justify-content-center">
             <div class="col-lg-6 border rounded bg-light">
-                <img src="<?= $imageFilePath ?>" alt="Gráfico DOT">
+                <img src="<?= $imageFilePath ?>" alt="Gráfico DOT" width="100%">
 
 <?php
 

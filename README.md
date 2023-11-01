@@ -2,10 +2,16 @@
 ## REQUERIMIENTOS
 
  - PHP V8.2 o superior
+ - Composer
+ - Graphviz
  
 ## PASOS PARA EJECUTAR
 1. Descargar (clonar) repositorio.
-2. Ejecutar el servidor de PHP en el archivo: *index.php*
+2. Instalar las dependencias de composer 
+    `
+    composer install 
+    `
+3. Ejecutar el servidor de PHP en el archivo: *index.php*
 
 ## COMO UTILIZAR
 1. Seleccionar las transiciones utilizando los select en la tabla.
